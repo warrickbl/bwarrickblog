@@ -1,0 +1,139 @@
+﻿@model IEnumerable<bwarrickblog.Models.Post>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+@foreach (var item in Model)
+{
+    <div class="row" style="padding:20px;">
+        <div class="col-md-4" style="align-items:center">
+            <h2 style="text-align:center"> @item.Title </h2>
+            <img class="img-responsive" style="height:250px; width:300px;margin-left:80px;"src="@Url.Content(item.MediaUrl)"/>  
+            
+        </div>
+        <div class="col-md-8">
+            <div style="margin-top:120px;">
+                <h4>Published: @Html.DisplayFor(modelItem => item.Created)</h4>
+                <div style="border:double; border-width:5px; font-family:400 12px/1.8 'Open Sans', serif; font-size:24px;">
+                    @{
+                        var shortDescript = String.Concat(item.Body.Take(75));
+                    }
+                    @Html.Raw(shortDescript)...
+                    
+                </div>
+            </div>
+            <button class="btn btn-default">
+                @Html.ActionLink("Read More", "Details", new { slug = item.Slug })
+            </button>
+            @if (User.IsInRole("Admin"))
+            {
+                <button class="btn btn-default">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                </button>
+            }
+
+            @if (User.IsInRole("Admin"))
+            {
+                <button class="btn btn-default">
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </button>
+            }
+        </div>
+    </div>
+}
+    <div class="row" style="padding:50px;">
+        <div class="col-md-12" style="text-align:center">
+            @if (User.IsInRole("Admin"))
+            {
+                <button class="btn btn-danger">
+                    @Html.ActionLink("Create New", "Create")
+                </button>
+            }
+        </div>
+    </div>
+    
+    @*<section>
+        @if (User.IsInRole("Admin"))
+        {
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+        }
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Body)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MediaUrl)
+                </th>*@
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Published)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Slug)
+                    </th>*@
+                @*<th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Body)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MediaUrl)
+                    </td>*@
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.Published)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Slug)
+                        </td>*@
+                    @*<td>
+                        @Html.ActionLink("Details", "Details", new { slug = item.Slug }) 
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink("| Edit", "Edit", new { id = item.Id })                  
+                        }
+                        
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink("| Delete", "Delete", new { id = item.Id })
+                        }
+                    </td>
+                </tr>
+                        }
+
+        </table>
+    </section>*@
+</body>
+</html>
