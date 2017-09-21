@@ -15,9 +15,9 @@
 @foreach (var item in Model)
 {
     <div class="row" style="padding:20px;">
-        <div class="col-md-4" style="align-items:center">
+        <div class="col-md-4">
             <h2 style="text-align:center"> @item.Title </h2>
-            <img class="img-responsive" style="height:250px; width:300px;margin-left:80px;"src="@Url.Content(item.MediaUrl)"/>  
+            <img class="img-responsive" style="height:250px; width:300px;"src="@item.MediaUrl"/>  
             
         </div>
         <div class="col-md-8">
@@ -25,15 +25,22 @@
                 <h4>Published: @Html.DisplayFor(modelItem => item.Created)</h4>
                 <div style="border:double; border-width:5px; font-family:400 12px/1.8 'Open Sans', serif; font-size:24px;">
                     @{
-                        var shortDescript = String.Concat(item.Body.Take(75));
+                        var shortDescript = String.Concat(item.Body.Take(150));
                     }
                     @Html.Raw(shortDescript)...
                     
                 </div>
+                @*<h4>Comments</h4>
+                <div style="border:double; border-width:5px; font-family:400 12px/1.8 'Open Sans', serif; font-size:24px;">
+                   
+                </div>*@
             </div>
             <button class="btn btn-default">
                 @Html.ActionLink("Read More", "Details", new { slug = item.Slug })
             </button>
+            @*<button class="btn btn-default" >
+                View Comments
+            </button>*@
             @if (User.IsInRole("Admin"))
             {
                 <button class="btn btn-default">

@@ -54,15 +54,18 @@ namespace bwarrickblog
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+               appId: "1464988350261422",
+               appSecret: "b0ab7d0a040cd9d4f3888fdd2f0adf96"
+
+            );
+
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "930926530759-0a13e4jv9ksianloak5be303itk49e8j.apps.googleusercontent.com",
+                ClientSecret = "Vuol_3xsRv8BudgKbgC2vYdq"
+            });
         }
     }
 }

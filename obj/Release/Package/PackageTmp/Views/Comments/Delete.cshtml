@@ -1,8 +1,6 @@
 ﻿@model bwarrickblog.Models.Comment
 
-@{
-    Layout = null;
-}
+
 
 <!DOCTYPE html>
 
@@ -30,7 +28,7 @@
             </dt>
     
             <dd>
-                @Html.DisplayFor(model => model.AuthorId)
+                @Html.DisplayFor(model => model.Author.UserName)
             </dd>
     
             <dt>
@@ -69,11 +67,11 @@
     
         @using (Html.BeginForm()) {
             @Html.AntiForgeryToken()
-    
+
             <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-default" /> |
-                @Html.ActionLink("Back to List", "Index")
-            </div>
+                <input type="submit" value="Delete" class="btn btn-default" style="color:#49e2d6" /> |
+                <button class="btn btn-default">@Html.ActionLink("Back to List", "Details", "Posts", new { slug = Model.BlogPost.Slug }, null)</button>
+</div>
         }
     </div>
 </body>

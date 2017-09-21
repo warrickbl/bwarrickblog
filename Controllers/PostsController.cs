@@ -9,18 +9,47 @@ using System.Web.Mvc;
 using bwarrickblog.Models;
 using bwarrickblog.Helpers;
 using System.IO;
+using PagedList;
+using PagedList.Mvc;
 
 namespace bwarrickblog
 {
+    [RequireHttps]
     public class PostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Posts
-        public ActionResult Index()
+        public ActionResult Index(int? page)           
         {
-            return View(db.Posts.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            if(Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                return View(db.Posts.OrderByDescending(p => p.Created).ToPagedList(pageNumber, pageSize));
+            }
+
+            return View(db.Posts.Where(p => p.Published == true).OrderByDescending(p => p.Created).ToPagedList(pageNumber, pageSize));
         }
+
+        // POST: Posts
+        [HttpPost]
+        public ActionResult Index(string searchStr, int? page)
+        {
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            ViewBag.Search = searchStr;
+            SearchHeper search = new SearchHeper();
+            var blogList = search.IndexSearch(searchStr);
+
+            if(Request.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                return View(blogList.OrderByDescending(p => p.Created).ToPagedList(pageNumber, pageSize));
+            }
+            return View(blogList.Where(p => p.Published == true).OrderByDescending(p => p.Created).ToPagedList(pageNumber, pageSize));
+        }
+
 
         // GET: Posts/Details/5
         public ActionResult Details(string Slug)
@@ -29,16 +58,18 @@ namespace bwarrickblog
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Post post = db.Posts.FirstOrDefault(p => p.Slug == Slug);
+            Post post = db.Posts.Include(p => p.Comments).FirstOrDefault(p => p.Slug == Slug);
             if (post == null)
             {
                 return HttpNotFound();
             }
+
             return View(post);
         }
 
 
         // GET: Posts/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -60,10 +91,13 @@ namespace bwarrickblog
             }
             if (ModelState.IsValid)
             {
-                var filePath = "/Assets/Aurora/Site/Parallax/assets/images/";
-                var absPath = Server.MapPath("~" + filePath);
-                post.MediaUrl = filePath + image.FileName;
-                image.SaveAs(Path.Combine(absPath, image.FileName));
+                if (image != null)
+                {
+                    var filePath = "/Assets/Aurora/Site/Parallax/assets/images/";
+                    var absPath = Server.MapPath("~" + filePath);
+                    post.MediaUrl = filePath + image.FileName;
+                    image.SaveAs(Path.Combine(absPath, image.FileName));
+                }
                 var Slug = StringUtilities.URLFriendly(post.Title);
                 if (String.IsNullOrWhiteSpace(Slug))
                 {
@@ -88,6 +122,7 @@ namespace bwarrickblog
 
 
         // GET: Posts/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -108,8 +143,10 @@ namespace bwarrickblog
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Body,Created,Updated,MediaUrl,Published,Slug")] Post post, string MediaUrl, HttpPostedFileBase image)
+        public ActionResult Edit([Bind(Include = "Id,Title,Body,Created, Updated, MediaUrl,Published,Slug")] Post post, string MediaUrl, HttpPostedFileBase image)
         {
+            post.Updated = System.DateTime.Now;
+           
             if (image != null && image.ContentLength > 0)
             {
                 var ext = Path.GetExtension(image.FileName).ToLower();
@@ -118,8 +155,8 @@ namespace bwarrickblog
             }
             if (ModelState.IsValid)
             {
-                post.Updated = System.DateTime.Now;
-                db.Entry(post).State = EntityState.Modified;
+
+                
                 if (image != null)
                 {
                     var filePath = "/Assets/Aurora/Site/Parallax/assets/images/";
@@ -131,6 +168,19 @@ namespace bwarrickblog
                 {
                     post.MediaUrl = MediaUrl;
                 }
+                //In order to keep the slug, we need to use AsNoTracking
+                var title = db.Posts.AsNoTracking().FirstOrDefault(p => p.Id == post.Id).Title;
+                if (post.Title != title) { 
+                var Slug = StringUtilities.URLFriendly(post.Title);
+                    
+                if (String.IsNullOrWhiteSpace(Slug))
+                {
+                    ModelState.AddModelError("Title", "Invalid title");
+                    return View(post);
+                }
+                    post.Slug = Slug;
+                }
+                db.Entry(post).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -138,6 +188,7 @@ namespace bwarrickblog
         }
 
         // GET: Posts/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -153,6 +204,7 @@ namespace bwarrickblog
         }
 
         // POST: Posts/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

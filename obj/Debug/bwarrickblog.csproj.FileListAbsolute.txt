@@ -94,3 +94,4 @@ c:\users\blwar\onedrive\documents\visual studio 2017\Projects\bwarrickblog\bwarr
 c:\users\blwar\onedrive\documents\visual studio 2017\Projects\bwarrickblog\bwarrickblog\obj\Debug\bwarrickblog.csprojResolveAssemblyReference.cache
 c:\users\blwar\onedrive\documents\visual studio 2017\Projects\bwarrickblog\bwarrickblog\obj\Debug\bwarrickblog.dll
 c:\users\blwar\onedrive\documents\visual studio 2017\Projects\bwarrickblog\bwarrickblog\obj\Debug\bwarrickblog.pdb
+C:\Users\blwar\OneDrive\Documents\Visual Studio 2017\Projects\bwarrickblog\bwarrickblog\obj\Debug\bwarrickblog.csproj.CoreCompileInputs.cache

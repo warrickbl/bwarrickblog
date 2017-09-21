@@ -48,7 +48,7 @@ namespace bwarrickblog.Migrations
                     Email = "rchapman@coderfoundry.com",
                     FirstName = "Ryan",
                     LastName = "Chapman",
-                }, "Abc123!");
+                }, "Mod123!");
             }
             if (!context.Users.Any(u => u.Email == "mjaang@coderfoundry.com"))
             {
@@ -58,7 +58,7 @@ namespace bwarrickblog.Migrations
                     Email = "mjaang@coderfoundry.com",
                     FirstName = "Mark",
                     LastName = "Jaang",
-                }, "Abc123!");
+                }, "Teach123!");
             }
             var userId = userManager.FindByEmail("blwarrick1107@gmail.com").Id;
             userManager.AddToRole(userId, "Admin");
