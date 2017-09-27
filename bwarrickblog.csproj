@@ -469,11 +469,13 @@
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\home2.jpg" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\IMG_2570.JPG" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\map-icon.png" />
+    <Content Include="Assets\Aurora\Site\Parallax\assets\images\Me.jpg" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\portfolio-item.jpg" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\preloader.gif" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\purple.jpg" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\slide1.jpg" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\images\slide2.jpg" />
+    <Content Include="Assets\Aurora\Site\Parallax\assets\images\white velvet.jpg" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\js\custom-portfolio.js" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\js\custom-shuffle-init.js" />
     <Content Include="Assets\Aurora\Site\Parallax\assets\js\custom.js" />

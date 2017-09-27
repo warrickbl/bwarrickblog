@@ -113,7 +113,7 @@ namespace bwarrickblog
                     Post post = db.Posts.Find(comment.BlogPostId);
                     return RedirectToAction("Details", "Posts", new { slug = post.Slug });
                 }
-                ViewBag.BlogPostId = new SelectList(db.Posts, "Id", "Title", comment.BlogPostId);
+                //ViewBag.BlogPostId = new SelectList(db.Posts, "Id", "Title", comment.BlogPostId);
                 return View(comment);
             }
             else
